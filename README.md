@@ -11,4 +11,4 @@ The misuse of these scripts is not my responsibility. They were created by pure 
 
 Robô caçador de situações de [Sure Bet](https://en.wikipedia.org/wiki/Arbitrage_betting) com funcionamento 24/7, para jogos simultâneos da NBA em diferentes casas de aposta. Construído utilizando Selenium.
 
-A utilização indevida destes scripts não são de minha responsabilidade. Os mesmo foram criados por pura ludicidade e exploração de limites, nenhum provento foi recebido e nenhuma regulação legal foi quebrada.
+A utilização indevida destes scripts não são de minha responsabilidade. Os mesmos foram criados por pura ludicidade e exploração de limites, nenhum provento foi recebido e nenhuma regulação legal foi quebrada.
