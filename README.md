@@ -7,7 +7,7 @@ Bot hunter of [Sure Bet](https://en.wikipedia.org/wiki/Arbitrage_betting) situat
 The misuse of these scripts is not my responsibility. They were created by pure playfulness and exploitation of limits, no earnings were received and no legal regulations were broken.
 
 
-## What will you find in this repository?
+## O que você encontrará neste repositório?
 
 Robô caçador de situações de [Sure Bet](https://en.wikipedia.org/wiki/Arbitrage_betting) com funcionamento 24/07, para jogos simultâneos da NBA em diferentes casas de aposta. Construído utilizando Selenium.
 
