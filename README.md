@@ -2,7 +2,7 @@
  
 ## What will you find in this repository?
 
-Bot hunter of [Sure Bet](https://en.wikipedia.org/wiki/Arbitrage_betting) situations with 7/24 operation, for simultaneous NBA games at different bookmakers. Built using Selenium.
+Bot hunter of [Sure Bet](https://en.wikipedia.org/wiki/Arbitrage_betting) situations with 7/24 operation, for simultaneous NBA games at different bookmakers. Built with Selenium.
 
 The misuse of these scripts is not my responsibility. They were created by pure playfulness and exploitation of limits, no earnings were received and no legal regulations were broken.
 
