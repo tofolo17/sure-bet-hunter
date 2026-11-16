@@ -4,6 +4,7 @@ from selenium.common.exceptions import *
 
 
 # Default functions
+# Converts pt-BR numbers to float ('1.234,56' -> 1234.56; odds keep the dot).
 def replace_comma(v, odd=False):
     str_list = list(v)
     for char in str_list:
@@ -54,8 +55,12 @@ def click(driver, reference, by):
             else:
                 driver.find_element_by_css_selector(reference).click()
             break
-        except (NoSuchElementException, ElementClickInterceptedException, StaleElementReferenceException,
-                ElementNotInteractableException):
+        except (
+            NoSuchElementException,
+            ElementClickInterceptedException,
+            StaleElementReferenceException,
+            ElementNotInteractableException,
+        ):
             pass
 
 
@@ -88,12 +93,22 @@ def find(driver, reference, by):
 def get_odd(driver, reference, by):
     try:
         if by == 'xpath':
-            odd = replace_comma(driver.find_element_by_xpath(reference).text, True)
+            odd = replace_comma(
+                driver.find_element_by_xpath(reference).text, True
+            )
         elif by == 'class_name':
-            odd = replace_comma(driver.find_element_by_class_name(reference).text, True)
+            odd = replace_comma(
+                driver.find_element_by_class_name(reference).text, True
+            )
         else:
-            odd = replace_comma(driver.find_element_by_css_selector(reference).text, True)
-    except (NoSuchElementException, StaleElementReferenceException, ValueError):
+            odd = replace_comma(
+                driver.find_element_by_css_selector(reference).text, True
+            )
+    except (
+        NoSuchElementException,
+        StaleElementReferenceException,
+        ValueError,
+    ):
         return 0
     else:
         return odd
@@ -101,10 +116,15 @@ def get_odd(driver, reference, by):
 
 def screenshot(driver, name, cont, sp_element=None):
     if sp_element is not None:
-        driver.execute_script("arguments[0].scrollIntoView();", driver.find_element_by_xpath(sp_element))
+        driver.execute_script(
+            "arguments[0].scrollIntoView();",
+            driver.find_element_by_xpath(sp_element),
+        )
     else:
         total_width = driver.execute_script("return document.body.offsetWidth")
-        total_height = driver.execute_script("return document.body.scrollHeight")
+        total_height = driver.execute_script(
+            "return document.body.scrollHeight"
+        )
         driver.set_window_size(total_width, total_height)
     driver.save_screenshot(f"Screenshots/{cont}_{name}.png")
 
@@ -122,20 +142,38 @@ def finish(driver1, driver2=None):
         driver2.quit()
 
 
-def bet(driver1, driver2, sp_parameter, bw_parameter, team_parameter, old_odds, n, keys1, keys2):
+# Simulation: the final "place bet" clicks are commented out, so it only
+# re-checks the odds and logs whether the bet would have worked.
+def bet(
+    driver1,
+    driver2,
+    sp_parameter,
+    bw_parameter,
+    team_parameter,
+    old_odds,
+    n,
+    keys1,
+    keys2,
+):
     # Verifying variables
-    print(f'Variables: {sp_parameter, bw_parameter, team_parameter, old_odds, n, keys1, keys2}')
+    print(
+        f'Variables: {sp_parameter, bw_parameter, team_parameter, old_odds, n, keys1, keys2}'
+    )
 
     # Function parameter
     testing = False
 
     # Declaring elements
     print('Declaring elements')
-    odd_sp_element = f'//*[@id="main-view"]/ms-fixture-list/div/div/div/div/ms-grid/ms-event-group[' \
-                     f'1]/ms-six-pack-event[{sp_parameter}]/div/div/div/ms-option-group[3]/ms-option[' \
-                     f'{team_parameter}]/ms-event-pick/div/div/ms-font-resizer'
-    odd_bw_element = f'//*[@id="standard:level_type=region,level_id=1000093652"]/div[2]/div/div[1]' \
-                     f'/div[{bw_parameter * 2}]/div/div[1]/button[{team_parameter}]/span[2]'
+    odd_sp_element = (
+        f'//*[@id="main-view"]/ms-fixture-list/div/div/div/div/ms-grid/ms-event-group['
+        f'1]/ms-six-pack-event[{sp_parameter}]/div/div/div/ms-option-group[3]/ms-option['
+        f'{team_parameter}]/ms-event-pick/div/div/ms-font-resizer'
+    )
+    odd_bw_element = (
+        f'//*[@id="standard:level_type=region,level_id=1000093652"]/div[2]/div/div[1]'
+        f'/div[{bw_parameter * 2}]/div/div[1]/button[{team_parameter}]/span[2]'
+    )
 
     # Refreshing to avoid fake gaps
     refresh(driver1, driver2, 2)
@@ -148,8 +186,10 @@ def bet(driver1, driver2, sp_parameter, bw_parameter, team_parameter, old_odds, 
 
     # Sending keys - SportingBet
     print('Sending keys - SP')
-    input_field_sp = '//*[@id="betslip"]/div[2]/div/ms-betslip-stakebar/div/div/span/ms-stake/div/ms-stake-input/div' \
-                     '/input '
+    input_field_sp = (
+        '//*[@id="betslip"]/div[2]/div/ms-betslip-stakebar/div/div/span/ms-stake/div/ms-stake-input/div'
+        '/input '
+    )
     click(driver1, input_field_sp, 'xpath')
     fill(driver1, input_field_sp, keys1, 'xpath')
 
@@ -179,12 +219,17 @@ def bet(driver1, driver2, sp_parameter, bw_parameter, team_parameter, old_odds, 
         # click(driver1, '//*[@id="betslip"]/div[2]/div/div/ms-betslip-action-button/div/button/span', 'xpath')
         # click(driver2, '//*[@id="__next"]/div/div[2]/div[4]/div/div[5]/button/span', 'xpath')
 
-        print(f'Essa aposta teria dado certo. Antes: {old_odds} || Depois: {[new_odd_sp, new_odd_bw]}\n')
+        print(
+            f'Essa aposta teria dado certo. Antes: {old_odds} || Depois: {[new_odd_sp, new_odd_bw]}\n'
+        )
 
         # Writing and more printing
         if not testing:
-            append_in('gaps', f'Essa aposta teria dado certo. '
-                              f'Antes: {old_odds} || Depois: {[new_odd_sp, new_odd_bw]}\n')
+            append_in(
+                'gaps',
+                f'Essa aposta teria dado certo. '
+                f'Antes: {old_odds} || Depois: {[new_odd_sp, new_odd_bw]}\n',
+            )
 
         # Printing right after betting
         screenshot(driver1, 'pos_click_sp', n)
@@ -197,7 +242,12 @@ def bet(driver1, driver2, sp_parameter, bw_parameter, team_parameter, old_odds, 
         screenshot(driver2, 'pos_click_sleep_bw', n)
     else:
         # Writing if something went wrong
-        print(f'Essa aposta não teria dado certo. Antes: {old_odds} || Depois: {[new_odd_sp, new_odd_bw]}\n')
+        print(
+            f'Essa aposta não teria dado certo. Antes: {old_odds} || Depois: {[new_odd_sp, new_odd_bw]}\n'
+        )
         if not testing:
-            append_in('gaps', f'Essa aposta não teria dado certo. '
-                              f'Antes: {old_odds} || Depois: {[new_odd_sp, new_odd_bw]}\n')
+            append_in(
+                'gaps',
+                f'Essa aposta não teria dado certo. '
+                f'Antes: {old_odds} || Depois: {[new_odd_sp, new_odd_bw]}\n',
+            )
